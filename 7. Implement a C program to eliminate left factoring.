@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+void eliminateLeftFactoring(char *nonTerminal, char productions[][MAX], int prodCount) {
+    char commonPrefix[MAX];
+    int prefixLength = 0;
+
+    // Find the common prefix
+    for (int i = 0; productions[0][i] && i < MAX; i++) {
+        char ch = productions[0][i];
+        int j;
+        for (j = 1; j < prodCount; j++) {
+            if (productions[j][i] != ch) {
+                break;
+            }
+        }
+        if (j == prodCount) {
+            commonPrefix[prefixLength++] = ch;
+        } else {
+            break;
+        }
+    }
+    commonPrefix[prefixLength] = '\0';
+
+    if (prefixLength == 0) {
+        printf("No common prefix found.\n");
+        return;
+    }
+
+    // Print the transformed grammar
+    printf("%s -> %s%s'\n", nonTerminal, commonPrefix, nonTerminal);
+    printf("%s' -> ", nonTerminal);
+    for (int i = 0; i < prodCount; i++) {
+        printf("%s", productions[i] + prefixLength);
+        if (i < prodCount - 1) {
+            printf(" | ");
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    char nonTerminal[MAX];
+    char productions[MAX][MAX];
+    int prodCount = 0;
+
+    printf("Enter the non-terminal: ");
+    scanf("%s", nonTerminal);
+    printf("Enter the productions (one per line). Type 'end' to finish:\n");
+
+    while (1) {
+        char input[MAX];
+        scanf("%s", input);
+        if (strcmp(input, "end") == 0) break;
+        strcpy(productions[prodCount++], input);
+    }
+
+    eliminateLeftFactoring(nonTerminal, productions, prodCount);
+    return 0;
+}
