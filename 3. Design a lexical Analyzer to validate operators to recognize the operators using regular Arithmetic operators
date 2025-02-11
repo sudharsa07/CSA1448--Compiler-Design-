@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <ctype.h>
+
+void processFile(FILE *file) {
+    int c;
+    while ((c = fgetc(file)) != EOF) {
+        if (isspace(c)) continue;
+
+        if (c == '+' || c == '-' || c == '*' || c == '/') {
+            printf("Operator: %c\n", c);
+        } else {
+            printf("Invalid character: %c\n", c);
+        }
+    }
+}
+
+int main() {
+    FILE *file = fopen("input.c", "r");
+    if (!file) {
+        printf("Error opening file.\n");
+        return 1;
+    }
+    processFile(file);
+    fclose(file);
+    return 0;
+}
