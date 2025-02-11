@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+void processFile(FILE *file) {
+    int c;
+    int whitespaceCount = 0;
+    int newlineCount = 0;
+
+    while ((c = fgetc(file)) != EOF) {
+        if (c == ' ' || c == '\t') {
+            whitespaceCount++;
+        } else if (c == '\n') {
+            newlineCount++;
+        }
+    }
+
+    printf("Number of whitespace characters: %d\n", whitespaceCount);
+    printf("Number of newline characters: %d\n", newlineCount);
+}
+
+int main() {
+    FILE *file = fopen("input.c", "r");
+    if (!file) {
+        printf("Error opening file.\n");
+        return 1;
+    }
+    processFile(file);
+    fclose(file);
+    return 0;
+}
