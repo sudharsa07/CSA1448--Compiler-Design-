@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+void eliminateLeftRecursion(char *nonTerminal, char alpha[][MAX], int alphaCount, char beta[][MAX], int betaCount) {
+    printf("%s -> ", nonTerminal);
+    for (int i = 0; i < betaCount; i++) {
+        printf("%s%s'", beta[i], nonTerminal);
+        if (i < betaCount - 1) printf(" | ");
+    }
+    printf("\n");
+
+    printf("%s' -> ", nonTerminal);
+    for (int i = 0; i < alphaCount; i++) {
+        printf("%s%s'", alpha[i], nonTerminal);
+        if (i < alphaCount - 1) printf(" | ");
+    }
+    printf(" ε\n");
+}
+
+int main() {
+    char nonTerminal[MAX];
+    char alpha[MAX][MAX], beta[MAX][MAX];
+    int alphaCount = 0, betaCount = 0;
+    char input[MAX];
+
+    printf("Enter the non-terminal: ");
+    scanf("%s", nonTerminal);
+    printf("Enter the productions (A->Aα | β). Type 'end' to finish:\n");
+
+    while (1) {
+        scanf("%s", input);
+        if (strcmp(input, "end") == 0) break;
+        if (input[0] == nonTerminal[0] && input[1] == '-') {
+            strcpy(alpha[alphaCount++], input + 2);
+        } else {
+            strcpy(beta[betaCount++], input);
+        }
+    }
+
+    eliminateLeftRecursion(nonTerminal, alpha, alphaCount, beta, betaCount);
+    return 0;
+}
