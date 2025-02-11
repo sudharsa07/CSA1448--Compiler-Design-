@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX_IDENTIFIER_LENGTH 31
+
+void processFile(FILE *file) {
+    int c;
+    char identifier[MAX_IDENTIFIER_LENGTH + 1];
+    int index = 0;
+
+    while ((c = fgetc(file)) != EOF) {
+        if (isspace(c)) continue;
+        if (isalpha(c)) {
+            identifier[index++] = c;
+            while ((c = fgetc(file)) != EOF && (isalnum(c) || c == '_')) {
+                if (index < MAX_IDENTIFIER_LENGTH) identifier[index++] = c;
+            }
+            identifier[index] = '\0';
+            printf("Identifier: %s\n", identifier);
+            index = 0;
+            ungetc(c, file);
+        } else if (isdigit(c)) {
+            printf("Constant: %c", c);
+            while ((c = fgetc(file)) != EOF && isdigit(c)) printf("%c", c);
+            printf("\n");
+            ungetc(c, file);
+        } else {
+            printf("Operator: %c\n", c);
+        }
+    }
+}
+
+int main() {
+    FILE *file = fopen("input.c", "r");
+    if (!file) {
+        printf("Error opening file.\n");
+        return 1;
+    }
+    processFile(file);
+    fclose(file);
+    return 0;
+}
