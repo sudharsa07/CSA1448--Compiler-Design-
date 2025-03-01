@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <string.h>
+
+#define SIZE 10  // Symbol table size
+
+struct Symbol {
+    char name[20];
+    int address;
+} table[SIZE];
+
+int count = 0; // Track number of symbols
+
+void insert(char *name, int address) {
+    if (count < SIZE) {
+        strcpy(table[count].name, name);
+        table[count].address = address;
+        count++;
+        printf("Inserted: %s at %d\n", name, address);
+    } else {
+        printf("Symbol table full!\n");
+    }
+}
+
+void display() {
+    printf("\nSymbol Table:\n");
+    printf("Name\tAddress\n");
+    for (int i = 0; i < count; i++) {
+        printf("%s\t%d\n", table[i].name, table[i].address);
+    }
+}
+
+int main() {
+    insert("x", 100);
+    insert("y", 200);
+    insert("z", 300);
+    
+    display();
+    return 0;
+}
