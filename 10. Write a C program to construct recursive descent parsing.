@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h>
+
+char *input;
+int pos = 0;
+
+void E(); // Expression
+void T(); // Term
+
+void error() {
+    printf("Syntax Error!\n");
+    exit(1);
+}
+
+void match(char expected) {
+    if (input[pos] == expected) pos++;
+    else error();
+}
+
+void T() {
+    if (input[pos] == 'a') match('a');
+    else error();
+}
+
+void E() {
+    T();
+    if (input[pos] == '+') {
+        match('+');
+        E();
+    }
+}
+
+int main() {
+    char expr[100];
+    printf("Enter an expression: ");
+    scanf("%s", expr);
+    input = expr;
+
+    E();
+    if (input[pos] == '\0') printf("Parsing Successful!\n");
+    else error();
+
+    return 0;
+}
