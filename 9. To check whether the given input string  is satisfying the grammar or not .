@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <string.h>
+
+int is_valid(char *subject, char *verb) {
+    return ((strcmp(subject, "John") == 0 || strcmp(subject, "Alice") == 0) &&
+            (strcmp(verb, "eats") == 0 || strcmp(verb, "reads") == 0));
+}
+
+int main() {
+    char subject[10], verb[10];
+
+    printf("Enter a sentence (Subject Verb): ");
+    scanf("%s %s", subject, verb);
+
+    if (is_valid(subject, verb))
+        printf("Valid sentence!\n");
+    else
+        printf("Invalid sentence!\n");
+
+    return 0;
+}
